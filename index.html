@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Memory Game</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Memory</h1>
+    <div id="board"></div>
+    <p id="message"></p>
+  </body>
+  <script>
+    const symbols = [
+      "🍎",
+      "🍌",
+      "🍒",
+      "🍇",
+      "🍉",
+      "🍓",
+      "🥝",
+      "🍍",
+      "🍎",
+      "🍌",
+      "🍒",
+      "🍇",
+      "🍉",
+      "🍓",
+      "🥝",
+      "🍍",
+    ];
+    let cards = symbols.sort(() => Math.random() - 0.5);
+    const board = document.getElementById("board");
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+
+    cards.forEach((symbol, index) => {
+      const button = document.createElement("button");
+      button.dataset.index = index;
+      button.dataset.symbol = symbol;
+      button.addEventListener("click", handleCardClick);
+      board.appendChild(button);
+    });
+
+    function handleCardClick(event) {
+      if (lockBoard) return;
+      const clickedCard = event.target;
+      if (clickedCard.textContent) return;
+      clickedCard.textContent = clickedCard.dataset.symbol;
+
+      if (!firstCard) {
+        firstCard = clickedCard;
+        return;
+      }
+      secondCard = clickedCard;
+      lockBoard = true;
+      checkForMatch();
+    }
+
+    function checkForMatch() {
+      if (firstCard.dataset.symbol === secondCard.dataset.symbol) {
+        resetTurn();
+        checkWin();
+      } else {
+        setTimeout(() => {
+          firstCard.textContent = "";
+          secondCard.textContent = "";
+          resetTurn();
+        }, 1000);
+      }
+    }
+
+    function resetTurn() {
+      firstCard = null;
+      secondCard = null;
+      lockBoard = false;
+    }
+
+    function checkWin() {
+      if (
+        [...document.querySelectorAll("#board button")].every(
+          (button) => button.textContent
+        )
+      ) {
+        document.getElementById("message").textContent = "You win!";
+      }
+    }
+  </script>
+</html>

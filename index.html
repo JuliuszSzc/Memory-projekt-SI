@@ -4,7 +4,8 @@
     <title>Memory Game</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css.css" />
+    <style></style>
   </head>
   <body>
     <h1>Memory</h1>
@@ -38,6 +39,7 @@
 
     cards.forEach((symbol, index) => {
       const button = document.createElement("button");
+      button.classList.add("card");
       button.dataset.index = index;
       button.dataset.symbol = symbol;
       button.addEventListener("click", handleCardClick);
@@ -47,8 +49,10 @@
     function handleCardClick(event) {
       if (lockBoard) return;
       const clickedCard = event.target;
-      if (clickedCard.textContent) return;
+      if (clickedCard.classList.contains("flipped")) return;
+
       clickedCard.textContent = clickedCard.dataset.symbol;
+      clickedCard.classList.add("flipped");
 
       if (!firstCard) {
         firstCard = clickedCard;
@@ -67,6 +71,8 @@
         setTimeout(() => {
           firstCard.textContent = "";
           secondCard.textContent = "";
+          firstCard.classList.remove("flipped");
+          secondCard.classList.remove("flipped");
           resetTurn();
         }, 1000);
       }
@@ -80,8 +86,8 @@
 
     function checkWin() {
       if (
-        [...document.querySelectorAll("#board button")].every(
-          (button) => button.textContent
+        [...document.querySelectorAll(".card")].every((card) =>
+          card.classList.contains("flipped")
         )
       ) {
         document.getElementById("message").textContent = "You win!";

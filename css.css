@@ -7,6 +7,8 @@ html {
 }
 
 body {
+  font-family: Arial, sans-serif;
+  text-align: center;
   margin: 0;
   height: 100%;
   display: flex;
@@ -15,7 +17,14 @@ body {
   justify-content: center;
   background-color: #222;
   color: #bbb;
-  font-family: sans-serif;
+}
+
+#board {
+  display: grid;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+  border-radius: 20px;
 }
 
 div#board {
@@ -44,4 +53,20 @@ div#board > button:hover {
 div#board > button:active {
   background: #ff3c97;
   scale: 0.9;
+}
+
+.card {
+  width: 75px;
+  height: 75px;
+  font-size: 2rem;
+  background: #eee;
+  border: none;
+  cursor: pointer;
+  transform: rotateY(0deg);
+  transition: transform 0.5s;
+}
+
+.card.flipped {
+  transform: rotateY(180deg);
+  background: white;
 }
